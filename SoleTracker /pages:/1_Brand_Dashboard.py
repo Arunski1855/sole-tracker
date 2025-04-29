@@ -1,46 +1,38 @@
-{\rtf1\ansi\ansicpg1252\cocoartf2821
-\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
-{\colortbl;\red255\green255\blue255;}
-{\*\expandedcolortbl;;}
-\margl1440\margr1440\vieww11520\viewh8400\viewkind0
-\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+import streamlit as st
+import pandas as pd
+import plotly.express as px
 
-\f0\fs24 \cf0 import streamlit as st\
-import pandas as pd\
-import plotly.express as px\
-\
-st.title("Brand Dashboard")\
-\
-st.write("Filter top athletes by shoe circuit, graduating class, position, and more.")\
-\
-# Example placeholder for data\
-# Later you can connect this to live data if needed\
-data = \{\
-    "Player": ["Marcus Spears Jr.", "Jordan Tyler", "Chris Barlow"],\
-    "Circuit": ["Nike EYBL", "Adidas 3SSB", "UA Next"],\
-    "Class": ["2027", "2026", "2027"],\
-    "Position": ["SG", "PG", "SF"],\
-    "State": ["Texas", "Georgia", "Florida"],\
-\}\
-\
-df = pd.DataFrame(data)\
-\
-# Filters\
-circuit = st.multiselect("Select Circuit(s)", options=df["Circuit"].unique(), default=df["Circuit"].unique())\
-grad_class = st.multiselect("Select Class(es)", options=df["Class"].unique(), default=df["Class"].unique())\
-position = st.multiselect("Select Position(s)", options=df["Position"].unique(), default=df["Position"].unique())\
-\
-# Apply Filters\
-filtered_df = df[\
-    (df["Circuit"].isin(circuit)) &\
-    (df["Class"].isin(grad_class)) &\
-    (df["Position"].isin(position))\
-]\
-\
-st.dataframe(filtered_df)\
-\
-# Visual Chart Example\
-st.subheader("Players by Circuit")\
-fig = px.histogram(filtered_df, x="Circuit", color="Circuit")\
-st.plotly_chart(fig)\
+st.title("Brand Dashboard")
+
+st.write("Explore players by shoe circuit, class, and position.")
+
+# Sample data — replace this with your real CSV/API data later
+data = {
+    "Player": ["Marcus Spears Jr.", "Jordan Tyler", "Chris Barlow", "Jalen Cook", "Braylon Harris"],
+    "Circuit": ["Nike EYBL", "Adidas 3SSB", "UA Next", "NXT Pro", "Nike EYBL"],
+    "Class": ["2027", "2026", "2027", "2026", "2026"],
+    "Position": ["SG", "PG", "SF", "PF", "SG"],
+    "State": ["Texas", "Georgia", "Florida", "California", "New York"],
+    "AAU Team": ["Team Takeover", "TSF", "Houston Defenders", "Team Griffin", "PSA Cardinals"],
 }
+
+df = pd.DataFrame(data)
+
+# Filters
+circuits = st.multiselect("Select Circuit(s):", df["Circuit"].unique(), default=df["Circuit"].unique())
+classes = st.multiselect("Select Class(es):", df["Class"].unique(), default=df["Class"].unique())
+positions = st.multiselect("Select Position(s):", df["Position"].unique(), default=df["Position"].unique())
+
+# Apply filters
+filtered_df = df[
+    (df["Circuit"].isin(circuits)) &
+    (df["Class"].isin(classes)) &
+    (df["Position"].isin(positions))
+]
+
+st.dataframe(filtered_df)
+
+# Chart: Players by Circuit
+st.subheader("Player Count by Circuit")
+fig = px.histogram(filtered_df, x="Circuit", color="Circuit", title="Distribution by Circuit")
+st.plotly_chart(fig)
