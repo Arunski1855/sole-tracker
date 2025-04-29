@@ -1,14 +1,17 @@
 import streamlit as st
 from PIL import Image
+import pages._1_Brand_Dashboard as brand
+import pages._2_Comp_Finder as comp
+import pages._3_Growth_Tracker as growth
 
-# Set up page configuration
+# Page config
 st.set_page_config(
     page_title="Sole Tracker",
     page_icon="👟",
     layout="wide",
 )
 
-# Sidebar with logos and navigation
+# Sidebar navigation
 st.sidebar.title("Sole Tracker Navigation")
 
 # Load logos
@@ -26,13 +29,14 @@ try:
 except:
     st.sidebar.warning("Logos not found. Continue without them.")
 
-# Page Navigation
+# Sidebar page selection
 page = st.sidebar.radio("Go to:", ["Brand Dashboard", "Comp Finder", "Growth Tracker"])
 
-# Redirect based on selection
 if page == "Brand Dashboard":
-    st.switch_page("pages/1_Brand_Dashboard.py")
+    brand.show()
 elif page == "Comp Finder":
-    st.switch_page("pages/2_Comp_Finder.py")
+    comp.show()
 elif page == "Growth Tracker":
-    st.switch_page("pages/3_Growth_Tracker.py")
+    growth.show()
+
+
